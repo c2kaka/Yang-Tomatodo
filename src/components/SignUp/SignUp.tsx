@@ -1,10 +1,76 @@
 import React from "react";
+import {Input , Icon , Button} from "antd";
+import  axios from "src/config/axios";
+import {Link} from "react-router-dom";
+import './SignUp.scss'
 
-class SignUp extends React.Component {
+interface ISignUpState {
+    account: string;
+    password: string;
+    password_confirmation: string;
+}
+
+class SignUp extends React.Component <any,ISignUpState>{
+    constructor(props){
+        super(props);
+        this.state={
+            account: '',
+            password: '',
+            password_confirmation: ''
+        };
+    }
+
+    onChangeAccount = (e)=>{
+        this.setState({account: e.target.value});
+    };
+
+    onChangePassword = (e)=>{
+        this.setState({password: e.target.value});
+    };
+
+    onChangeConfirmation = (e)=>{
+        this.setState({password_confirmation: e.target.value});
+    };
+
+    submit = async ()=>{
+        const { account ,password ,password_confirmation }=this.state;
+        try{
+            await axios.post('sign_up/user',{
+                account,
+                password,
+                password_confirmation
+            });
+        }
+        catch (e) {
+            throw new Error(e);
+        }
+    };
+
     render() {
+        const { account ,password ,password_confirmation }=this.state;
         return (
-            <div>
-                SignUp
+            <div className="SignUp" id="SignUp">
+                <h1>番茄闹钟注册</h1>
+                <Input
+                    placeholder="请输入你的用户名"
+                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }}/>}
+                    allowClear={true}
+                    value={account}
+                    onChange={this.onChangeAccount}
+                />
+                <Input.Password
+                    value={password}
+                    placeholder="请输入密码"
+                    onChange={this.onChangePassword}
+                />
+                <Input.Password
+                    value={password_confirmation}
+                    placeholder="请确认密码"
+                    onChange={this.onChangeConfirmation}
+                />
+
+                <Button type='primary' className='signUpBtn' onClick={this.submit}>注册</Button>
+                <p>已有账号?<Link to='/login' >登录</Link></p>
             </div>
         )
     }
