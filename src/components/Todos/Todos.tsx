@@ -34,61 +34,80 @@ class Todos extends React.Component <any, ITodosState> {
         try {
             const response = await axios.get("todos");
             const todos = response.data.resources;
-            const newTodos=todos.map(t=>
-                Object.assign({},t,{editable:false})
+            const newTodos = todos.map(t =>
+                Object.assign({}, t, {editable: false})
             );
-            this.setState({todos:newTodos});
+            this.setState({todos: newTodos});
         } catch (e) {
             throw new Error(e);
         }
     };
 
-    updateTodos = async (id:number,params:any) => {
+    getUncompletedTodos() {
+        return this.getUndeletedTodos().filter(t => !t.completed);
+    }
+
+    getCompletedTodos() {
+        return this.getUndeletedTodos().filter(t => t.completed);
+    }
+
+    getUndeletedTodos() {
+        return this.state.todos.filter(t => !t.deleted);
+    }
+
+    updateTodos = async (id: number, params: any) => {
         const {todos} = this.state;
         try {
-            const response = await axios.put(`todos/${id}`,params);
-            const newTodos = todos.map(t=>{
-                if(t.id === id){
+            const response = await axios.put(`todos/${id}`, params);
+            const newTodos = todos.map(t => {
+                if (t.id === id) {
                     return response.data.resource;
-                }else{
+                } else {
                     return t;
                 }
             });
-            this.setState({todos:newTodos})
-        }
-        catch (e) {
+            this.setState({todos: newTodos})
+        } catch (e) {
             throw new Error(e);
         }
     };
 
-    setEditable = (id:number) => {
-      const {todos}  = this.state;
-      const newTodos=todos.map(t=>{
-          if(t.id === id){
-              return Object.assign({},t,{editable:true})
-          }else {
-              return Object.assign({},t,{editable:false})
-          }
-      });
-      this.setState({todos:newTodos});
+    setEditable = (id: number) => {
+        const {todos} = this.state;
+        const newTodos = todos.map(t => {
+            if (t.id === id) {
+                return Object.assign({}, t, {editable: true})
+            } else {
+                return Object.assign({}, t, {editable: false})
+            }
+        });
+        this.setState({todos: newTodos});
     };
 
     render() {
         return (
             <div className="todos" id="todos">
                 <TodoInput addTodo={(params) => this.addTodo(params)}/>
-                <main>
-                    <ul>
-                        {this.state.todos.map(t => {
-                            return <TodoItem key={t.id} {...t}
-                                             updateTodos={(id,params) => {this.updateTodos(id,params)} }
-                                             setEditable={id=>this.setEditable(id)}
-                            />
-                        })
-                        }
-
-                    </ul>
-                </main>
+                <div className="todoList">
+                    {this.getUncompletedTodos().map(t => {
+                        return <TodoItem key={t.id} {...t}
+                                         updateTodos={(id, params) => {
+                                             this.updateTodos(id, params)
+                                         }}
+                                         setEditable={id => this.setEditable(id)}
+                        />
+                    })
+                    }
+                    {this.getCompletedTodos().map(t => {
+                        return <TodoItem key={t.id} {...t}
+                                         updateTodos={(id, params) => {
+                                             this.updateTodos(id, params)
+                                         }}
+                                         setEditable={id => this.setEditable(id)}
+                        />
+                    })
+                    }
+                </div>
             </div>
         )
     };

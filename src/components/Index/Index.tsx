@@ -57,11 +57,13 @@ class Index extends React.Component<IRouter,IIndexState> {
                     <Dropdown overlay={menu} trigger={['click']}>
                         <span>
                             {this.state.user && this.state.user.account}
-                            <Icon type="down" style={{marginLeft: 8}}/>
+                            <Icon type="down" style={{marginLeft: 8,cursor: "pointer"}}/>
                         </span>
                     </Dropdown>
                 </header>
-                <Todos />
+                <main>
+                    <Todos />
+                </main>
             </div>
         )
     }
