@@ -3,28 +3,14 @@ import TodoInput from "./TodoInput";
 import axios from "src/config/axios";
 import TodoItem from "./TodoItem";
 import "./Todos.scss"
+import {connect} from "react-redux";
+import {initTodos} from "../../redux/actions";
 
-interface ITodosState {
-    todos: any[];
-}
 
-class Todos extends React.Component <any, ITodosState> {
+class Todos extends React.Component <any> {
     constructor(props) {
         super(props);
-        this.state = {
-            todos: []
-        }
     }
-
-    addTodo = async (params: any) => {
-        const {todos} = this.state;
-        try {
-            const response = await axios.post("todos", params);
-            this.setState({todos: [response.data.resource, ...todos]});
-        } catch (e) {
-            throw new Error(e);
-        }
-    };
 
     async componentDidMount() {
         await this.getTodos();
@@ -37,7 +23,7 @@ class Todos extends React.Component <any, ITodosState> {
             const newTodos = todos.map(t =>
                 Object.assign({}, t, {editable: false})
             );
-            this.setState({todos: newTodos});
+            this.props.initTodos(newTodos);
         } catch (e) {
             throw new Error(e);
         }
@@ -52,58 +38,30 @@ class Todos extends React.Component <any, ITodosState> {
     }
 
     getUndeletedTodos() {
-        return this.state.todos.filter(t => !t.deleted);
+        return this.props.todos.filter(t => !t.deleted);
     }
-
-    updateTodos = async (id: number, params: any) => {
-        const {todos} = this.state;
-        try {
-            const response = await axios.put(`todos/${id}`, params);
-            const newTodos = todos.map(t => {
-                if (t.id === id) {
-                    return response.data.resource;
-                } else {
-                    return t;
-                }
-            });
-            this.setState({todos: newTodos})
-        } catch (e) {
-            throw new Error(e);
-        }
-    };
-
-    setEditable = (id: number) => {
-        const {todos} = this.state;
-        const newTodos = todos.map(t => {
-            if (t.id === id) {
-                return Object.assign({}, t, {editable: true})
-            } else {
-                return Object.assign({}, t, {editable: false})
-            }
-        });
-        this.setState({todos: newTodos});
-    };
 
     render() {
         return (
             <div className="todos" id="todos">
-                <TodoInput addTodo={(params) => this.addTodo(params)}/>
+                {/*<TodoInput addTodo={(params) => this.addTodo(params)}/>*/}
+                <TodoInput/>
                 <div className="todoList">
                     {this.getUncompletedTodos().map(t => {
                         return <TodoItem key={t.id} {...t}
-                                         updateTodos={(id, params) => {
-                                             this.updateTodos(id, params)
-                                         }}
-                                         setEditable={id => this.setEditable(id)}
+                                         // updateTodos={(id, params) => {
+                                         //     this.updateTodos(id, params)
+                                         // }}
+                                         // setEditable={id => this.setEditable(id)}
                         />
                     })
                     }
                     {this.getCompletedTodos().map(t => {
                         return <TodoItem key={t.id} {...t}
-                                         updateTodos={(id, params) => {
-                                             this.updateTodos(id, params)
-                                         }}
-                                         setEditable={id => this.setEditable(id)}
+                                         // updateTodos={(id, params) => {
+                                         //     this.updateTodos(id, params)
+                                         // }}
+                                         // setEditable={id => this.setEditable(id)}
                         />
                     })
                     }
@@ -113,4 +71,14 @@ class Todos extends React.Component <any, ITodosState> {
     };
 }
 
-export default Todos
+const mapStateToProps = (state, ownProps) => ({
+    todos:state.todos,
+    ...ownProps
+});
+
+const mapDispatchToProps = {
+    initTodos
+};
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(Todos)

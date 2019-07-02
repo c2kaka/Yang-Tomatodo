@@ -2,13 +2,16 @@ import React from "react";
 import {Checkbox, Icon} from 'antd';
 import classNames from 'classnames';
 import "./TodoItem.scss"
+import {updateTodos,setEditable} from "../../redux/actions";
+import {connect} from "react-redux";
+import axios from "../../config/axios";
 interface ITodoItemProps {
     description: string;
     completed: boolean;
-    updateTodos: (id: number, params: any) => void;
+    updateTodos: (params: any) => any;
     id: number;
     editable: boolean;
-    setEditable: (id: number) => void;
+    setEditable: (id: number) => any;
 }
 
 interface ITodoItemState {
@@ -23,8 +26,21 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
         }
     }
 
-    updateTodos = (params: any) => {
-        this.props.updateTodos(this.props.id, params);
+    // updateTodos = (params: any) => {
+    //     this.props.updateTodos(this.props.id, params);
+    // };
+
+    // setEditable = () => {
+    //     this.props.setEditable(this.props.id);
+    // };
+
+    updateTodos = async (params: any) => {
+        try {
+            const response = await axios.put(`todos/${this.props.id}`, params);
+            this.props.updateTodos(response.data.resource);
+        } catch (e) {
+            throw new Error(e);
+        }
     };
 
     setEditable = () => {
@@ -32,10 +48,7 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
     };
 
     keyUp = (e) => {
-        console.log("enter keyup")
-        console.log(e.keyCode)
         if(e.keyCode === 13){
-
             this.updateContent();
         }
     };
@@ -77,4 +90,9 @@ class TodoItem extends React.Component<ITodoItemProps, ITodoItemState> {
     }
 }
 
-export default TodoItem
+const mapDispatchToProps = {
+    updateTodos,
+    setEditable
+};
+
+export default connect(null,mapDispatchToProps)(TodoItem)
