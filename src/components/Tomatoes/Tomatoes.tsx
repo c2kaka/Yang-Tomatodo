@@ -1,22 +1,51 @@
 import React from "react";
 import "./Tomatoes.scss"
-import {Button} from "antd";
+import TomatoAction from "./TomatoAction"
 import axios from "src/config/axios";
 import {connect} from "react-redux";
-import {addTomato} from "../../redux/actions";
+import {addTomato,initTomatoes,postTomato} from "../../redux/actions/tomatoes";
 
-class Tomatoes extends React.Component {
+interface ITomatoesProps {
+    tomatoes: any[];
+    addTomato: (payload:any) => any;
+    initTomatoes: (payload: any[]) => any;
+    postTomato: (payload: any) => any;
+}
+
+class Tomatoes extends React.Component<ITomatoesProps> {
+
+    componentDidMount(): any {
+        this.initTomatoes();
+    }
 
     startTomato = async ()=>{
       const params = {duration: 1500000};
       const response = await axios.post("tomatoes",params);
-      console.log(response.data);
+      this.props.addTomato(response.data.resource);
+    };
+
+    getUnCompletedTomato = () => {
+        return this.props.tomatoes.filter(t=> !t.description && !t.ended_at)[0];
+    };
+
+    initTomatoes = async ()=>{
+        const response = await axios.get("tomatoes");
+        this.props.initTomatoes(response.data.resources);
+    };
+
+    postTomato = async (id:number,params:any)=>{
+        const response = await axios.put(`tomatoes/${id}`,params);
+        this.props.postTomato(response.data.resource);
     };
 
     render() {
         return (
             <div className="Tomatoes" id="Tomatoes">
-                <Button className="startTomatoBtn" onClick={this.startTomato}>开始番茄</Button>
+                <TomatoAction
+                    startTomato={this.startTomato}
+                    getUnCompletedTomato={this.getUnCompletedTomato}
+                    postTomato={this.postTomato}
+                />
             </div>
         )
     }
@@ -28,7 +57,9 @@ const mapStateToProps = (state,ownProps) => ({
 });
 
 const mapDispatchToProps = {
-    addTomato
+    addTomato,
+    initTomatoes,
+    postTomato
 };
 
 export default connect(mapStateToProps,mapDispatchToProps)(Tomatoes)

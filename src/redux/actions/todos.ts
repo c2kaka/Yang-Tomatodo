@@ -1,4 +1,4 @@
-import {ADD_TODO, INIT_TODOS,UPDATE_TODOS,SET_EDITABLE,ADD_TOMATO} from "./actionTypes";
+import {ADD_TODO, INIT_TODOS,UPDATE_TODOS,SET_EDITABLE} from "../actionTypes";
 
 export const addTodo = (payload:any)=>({
   type: ADD_TODO,
@@ -20,7 +20,4 @@ export const setEditable = (id:number)=>({
     id
 });
 
-export const addTomato = (payload:any) => ({
-   type: ADD_TOMATO,
-   payload
-});
+

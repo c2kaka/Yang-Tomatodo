@@ -2,7 +2,7 @@ import React from "react";
 import {Checkbox, Icon} from 'antd';
 import classNames from 'classnames';
 import "./TodoItem.scss"
-import {updateTodos,setEditable} from "../../redux/actions";
+import {updateTodos,setEditable} from "../../redux/actions/todos";
 import {connect} from "react-redux";
 import axios from "../../config/axios";
 interface ITodoItemProps {
