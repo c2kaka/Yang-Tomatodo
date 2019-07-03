@@ -1,5 +1,5 @@
 import React from "react";
-import {Button,Input} from "antd";
+import {Button,Input,Icon} from "antd";
 import TomatoCountDown from "./TomatoCountDown";
 
 interface ITomatoActionProps {
@@ -41,14 +41,19 @@ class TomatoAction extends React.Component<ITomatoActionProps,ITomatoActionState
             const duration = unCompletedTomato.duration;
             const timeNow = new Date().getTime();
             if(timeNow - startAt > duration){
-                html = <Input
-                    placeholder="您刚才完成了什么任务？"
-                    value={this.state.description}
-                    onChange={ e => this.setState({description:e.target.value})}
-                    onPressEnter={this.onPressEnter}
-                />
+                html =<div>
+                    <Input
+                        placeholder="您刚才完成了什么任务？"
+                        value={this.state.description}
+                        onChange={ e => this.setState({description:e.target.value})}
+                        onPressEnter={this.onPressEnter}
+                    />
+                    <Icon type="close-circle" />
+                </div>
+
             }else{
-                html= <TomatoCountDown />
+                const timer = duration - (timeNow - startAt);
+                html= <TomatoCountDown timer={timer}/>
             }
         }
 
