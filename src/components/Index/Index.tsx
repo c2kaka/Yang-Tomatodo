@@ -4,6 +4,7 @@ import axios from "src/config/axios";
 import history from "src/config/history"
 import "./Index.scss";
 import Todos from "../Todos/Todos";
+import Tomatoes from "../Tomatoes/Tomatoes"
 
 interface IRouter {
     history: any;
@@ -62,6 +63,7 @@ class Index extends React.Component<IRouter,IIndexState> {
                     </Dropdown>
                 </header>
                 <main>
+                    <Tomatoes />
                     <Todos />
                 </main>
             </div>
