@@ -1,0 +1,22 @@
+.TomatoCountDown{
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px 0;
+  overflow: hidden;
+  text-align: center;
+
+  >.countdownText{
+    position: relative;
+    z-index: 1;
+  }
+
+  >.countdownProgress{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    background-color: #e9e9e9;
+    box-shadow: 1px 0 0 0 #e1e1e1;
+  }
+}
