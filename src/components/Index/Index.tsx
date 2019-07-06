@@ -5,6 +5,7 @@ import history from "src/config/history"
 import "./Index.scss";
 import Todos from "../Todos/Todos";
 import Tomatoes from "../Tomatoes/Tomatoes"
+import Statistics from "../Statistics/Statistics";
 
 interface IRouter {
     history: any;
@@ -66,6 +67,7 @@ class Index extends React.Component<IRouter,IIndexState> {
                     <Tomatoes />
                     <Todos />
                 </main>
+                <Statistics />
             </div>
         )
     }

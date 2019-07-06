@@ -1,0 +1,51 @@
+.todoHistory{
+  background-color: #FFF;
+  margin: 8px 0;
+  border-radius: 4px;
+  border: 1px solid #DDD;
+  box-shadow: 0 2px 0 rgba(225,225,225,.2);
+  padding: 16px;
+  .completedTodos{
+    .todoHistoryItem{
+      display: flex;
+      padding: 16px;
+      border: 1px solid #DDD;
+      box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+      border-radius: 4px;
+      margin-bottom: .6em;
+      p{
+        padding: 0;
+        margin: 0;
+      }
+      .title{
+        min-width: 120px;
+        margin-right: 8px;
+        .date{
+          font-size: 14px;
+          color: #222222;
+        }
+        .weekday{
+          margin-left: 8px;
+          font-size: 12px;
+          color: #888888;
+        }
+        .description{
+          font-size: 14px;
+          color: #888888;
+        }
+      }
+
+      .todosDetail{
+        flex: 1;
+      }
+    }
+  }
+
+  .deletedTodos{
+    padding: 16px;
+    border: 1px solid #DDD;
+    box-shadow: 0 1px 2px 0 rgba(0,0,0,.1);
+    border-radius: 4px;
+    margin-bottom: .6em;
+  }
+}

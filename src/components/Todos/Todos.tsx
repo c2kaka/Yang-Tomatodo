@@ -56,15 +56,15 @@ class Todos extends React.Component <any> {
                         />
                     })
                     }
-                    {this.getCompletedTodos().map(t => {
-                        return <TodoItem key={t.id} {...t}
-                                         // updateTodos={(id, params) => {
-                                         //     this.updateTodos(id, params)
-                                         // }}
-                                         // setEditable={id => this.setEditable(id)}
-                        />
-                    })
-                    }
+                    {/*{this.getCompletedTodos().map(t => {*/}
+                    {/*    return <TodoItem key={t.id} {...t}*/}
+                    {/*                     // updateTodos={(id, params) => {*/}
+                    {/*                     //     this.updateTodos(id, params)*/}
+                    {/*                     // }}*/}
+                    {/*                     // setEditable={id => this.setEditable(id)}*/}
+                    {/*    />*/}
+                    {/*})*/}
+                    {/*}*/}
                 </div>
             </div>
         )
